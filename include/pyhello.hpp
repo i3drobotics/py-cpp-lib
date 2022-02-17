@@ -11,7 +11,7 @@ public:
     pyHello()
     {
         /* import hello */
-        py_class_hello_ = pyh::getPyClass(py_class_name_, py_class_name_);
+        py_class_hello_ = pyh::getPyClass(py_module_name_, py_class_name_);
         py_module_ready_ = true;
         if (!py_module_ready_){
             std::cerr << "Failed initalise " << py_class_name_ << " python module" << std::endl;
@@ -80,6 +80,7 @@ public:
 
 private:
 
+    const char* py_module_name_ = "hello";
     const char* py_class_name_ = "hello";
     bool py_module_ready_ = false;
     pyh::py::object py_class_hello_;

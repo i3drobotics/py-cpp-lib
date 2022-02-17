@@ -1,5 +1,5 @@
 
-class helloWorld:
+class hello:
     def __init__(self):
         self.msg = "hello world"
 
