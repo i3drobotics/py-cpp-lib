@@ -8,11 +8,12 @@ RUN apt-get update && \
     sudo git build-essential gdb && \
     rm -rf /var/lib/apt/lists/*
 
-# Add non root user
-RUN adduser --disabled-password --gecos '' nonrootuser
-RUN adduser nonrootuser sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER nonrootuser
+### Gitpod user ###
+# '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
+RUN useradd -l -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod \
+    # passwordless sudo for users in the 'sudo' group
+    && sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoer
+USER gitpod
 
 # Install project dependencies
 RUN sudo apt-get update && \
