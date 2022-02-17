@@ -1,3 +1,5 @@
+FROM ubuntu:focal
+
 # Install project dependencies
 RUN apt-get update && \
     TZ=Europe/London \
