@@ -1,6 +1,6 @@
 FROM ubuntu:focal
 
-# Install minimal gitpod and development dependices
+# Install development dependices
 RUN apt-get update && \
     TZ=Europe/London \
     DEBIAN_FRONTEND=noninteractive \
