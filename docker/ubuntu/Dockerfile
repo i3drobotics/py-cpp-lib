@@ -30,6 +30,7 @@ RUN sudo apt-get update && \
     sudo rm -rf /var/lib/apt/lists/*
 
 # Add project files
+ADD .vscode /workspace/py-cpp-lib/.vscode
 ADD py /workspace/py-cpp-lib/py
 ADD src /workspace/py-cpp-lib/src
 ADD include /workspace/py-cpp-lib/include
@@ -43,3 +44,5 @@ RUN mkdir build && \
     cd build && \
     cmake .. && \
     make -j4
+RUN cd build && \
+    ./PyHelloApp

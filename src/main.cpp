@@ -1,8 +1,10 @@
-#include "pyhello.hpp"
+#include "pyhello.h"
 
 int main(int argc, char *argv[])
 {
-    pyHello * pyhello = new pyHello();
+    pyHelper::initPython();   
+    pyHello pyhello = pyHello();
+    std::cout << pyhello.getMsg() << std::endl;
 
     return 0;
 }

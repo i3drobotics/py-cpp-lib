@@ -7,8 +7,9 @@
             "type": "gdb",
             "request": "launch",
             "name": "Debug App (GDB)",
-            "target": "./PyHello",
-            "cwd": "${workspaceRoot}/build"
+            "target": "./PyHelloApp",
+            "cwd": "${workspaceRoot}/build",
+            "preLaunchTask": "Build debug"
         }
     ]
-  }
+}

@@ -3,10 +3,6 @@ class hello:
     def __init__(self):
         self.msg = "hello world"
 
-    def printMsg(self) -> bool:
-        print(self.msg)
-        return True
-
     def getMsg(self) -> str:
         return self.msg
 

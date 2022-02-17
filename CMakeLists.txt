@@ -51,20 +51,26 @@ message(STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}")
 
 include_directories(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
-set(HEADERS
-	${HEADERS}
-  include/pyhelper.hpp
-	include/pyhello.hpp
+set(LIB_SRCS
+  src/pyhelper.cpp
+  src/pyhello.cpp
 )
 
-set(SOURCES
-	${SOURCES}
-	src/main.cpp
+# Build pyHello library
+add_library(${PROJECT_NAME} SHARED ${LIB_SRCS})
+target_link_libraries(${PROJECT_NAME} PRIVATE
+  ${PYTHON_LIBRARIES}
+	${Boost_LIBRARIES}
 )
 
-add_executable( ${PROJECT_NAME} ${HEADERS} ${SOURCES} )
-target_link_libraries(${PROJECT_NAME} PUBLIC 
-	${PYTHON_LIBRARIES}
+set(APP_SRCS
+  src/main.cpp
+)
+
+add_executable( ${PROJECT_NAME}App ${APP_SRCS} )
+target_link_libraries(${PROJECT_NAME}App PUBLIC
+  ${PROJECT_NAME}
+  ${PYTHON_LIBRARIES}
 	${Boost_LIBRARIES}
 )
 
