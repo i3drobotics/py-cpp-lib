@@ -2,12 +2,14 @@ image:
   file: docker/gitpod/Dockerfile
 
 tasks:
-  - name: build
+  - name: build & run
     init: |
       mkdir build
       cd build
       cmake ..
       make -j4
+      ./PyHelloApp
+      cd ..
 
 github:
   prebuilds:
