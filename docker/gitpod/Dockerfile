@@ -9,10 +9,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Add non root user
-RUN adduser --disabled-password --gecos '' gitpod
-RUN adduser gitpod sudo
+RUN adduser --disabled-password --gecos '' nonrootuser
+RUN adduser nonrootuser sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER gitpod
+USER nonrootuser
 
 # Install project dependencies
 RUN sudo apt-get update && \
