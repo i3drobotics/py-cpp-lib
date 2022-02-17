@@ -2,7 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
 
-# Install dependices
+# Install dependencies
 ENV chocolateyUseWindowsCompression false
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 RUN iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')); `

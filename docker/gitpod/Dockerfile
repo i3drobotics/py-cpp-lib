@@ -1,6 +1,6 @@
 FROM ubuntu:focal
 
-# Install development dependices
+# Install development dependencies
 RUN apt-get update && \
     TZ=Europe/London \
     DEBIAN_FRONTEND=noninteractive \
