@@ -1,6 +1,6 @@
 # escape=`
 
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2022
 
 # Install dependencies
 ENV chocolateyUseWindowsCompression false
@@ -10,7 +10,7 @@ RUN iex ((new-object net.webclient).DownloadString('https://chocolatey.org/insta
 RUN choco install -y git; `
     choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System'; `
     choco install -y python;
-RUN choco install -y visualstudio2019community --package-parameters "--allWorkloads --includeRecommended --passive"
+RUN choco install -y visualstudio2022community --package-parameters "--allWorkloads --includeRecommended --includeOptional --passive"
 
 SHELL ["cmd", "/S", "/C"]
 
@@ -31,7 +31,7 @@ ADD CMakeLists.txt config.h.in /workspace/python-boost-cpp-example/
 # # Build project
 # RUN mkdir build && `
 #     cd build && `
-#     cmake -G "Visual Studio 16 2019" -A x64 .. 
+#     cmake -G "Visual Studio 17 2022" -A x64 .. 
 # RUN cmake --build .
 # RUN cd build && `
 #     ./PyHelloApp.exe
