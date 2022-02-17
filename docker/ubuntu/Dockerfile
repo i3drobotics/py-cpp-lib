@@ -14,6 +14,11 @@ RUN adduser nonrootuser sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER nonrootuser
 
+# Add workspace
+WORKDIR /workspace
+RUN sudo chown -R nonrootuser:nonrootuser /workspace && \
+    sudo chmod 755 /workspace
+
 # Install project dependencies
 RUN sudo apt-get update && \
     sudo TZ=Europe/London \
@@ -25,12 +30,14 @@ RUN sudo apt-get update && \
     sudo rm -rf /var/lib/apt/lists/*
 
 # Add project files
-ADD py /py-cpp-lib/py
-ADD src /py-cpp-lib/src
-ADD include /py-cpp-lib/include
-ADD CMakeLists.txt config.h.in /py-cpp-lib/
+ADD py /workspace/py-cpp-lib/py
+ADD src /workspace/py-cpp-lib/src
+ADD include /workspace/py-cpp-lib/include
+ADD CMakeLists.txt config.h.in /workspace/py-cpp-lib/
 
-WORKDIR /py-cpp-lib
+RUN sudo chown -R nonrootuser:nonrootuser /workspace
+
+WORKDIR /workspace/py-cpp-lib
 # Build project
 RUN mkdir build && \
     cd build && \
