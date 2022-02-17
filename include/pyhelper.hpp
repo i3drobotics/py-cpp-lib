@@ -59,7 +59,7 @@ namespace pyhelper
             v->push_back(str);
         }
     }
-
+    
     static bool hasattr(py::object o, const char* name) {
         return PyObject_HasAttrString(o.ptr(), name);
     }
@@ -76,7 +76,7 @@ namespace pyhelper
         }
     }
 
-    static py::object getPyClass(char* py_module, char* py_class){
+    static py::object getPyClass(const char* py_module, const char* py_class){
         py::object main_module((
         py::handle<>(py::borrowed(PyImport_AddModule("__main__")))));
 

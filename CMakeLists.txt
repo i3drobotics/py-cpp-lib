@@ -50,11 +50,10 @@ message(STATUS "PYTHON_INCLUDE_DIRS = ${PYTHON_INCLUDE_DIRS}")
 message(STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}")
 
 include_directories(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
-LINK_LIBRARIES(${Boost_LIBRARIES} ${PYTHON_LIBRARIES}) # Deprecated but so convenient!
 
 set(HEADERS
 	${HEADERS}
-    include/pyhelper.hpp
+  include/pyhelper.hpp
 	include/pyhello.hpp
 )
 
@@ -64,7 +63,9 @@ set(SOURCES
 )
 
 add_executable( ${PROJECT_NAME} ${HEADERS} ${SOURCES} )
-# target_link_libraries(${PROJECT_NAME} PUBLIC 
-# 	${PYTHON_LIBRARIES}
-# 	${Boost_LIBRARIES}
-# )
+target_link_libraries(${PROJECT_NAME} PUBLIC 
+	${PYTHON_LIBRARIES}
+	${Boost_LIBRARIES}
+)
+
+FILE(COPY py/hello.py DESTINATION .)

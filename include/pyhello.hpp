@@ -8,9 +8,9 @@ namespace pyh = pyhelper;
 class pyHello
 {
 public:
-    pyHello(): py_class_name_("hello"), py_module_ready_(false)
+    pyHello()
     {
-        /* hello.__init__() */
+        /* import hello */
         py_class_hello_ = pyh::getPyClass(py_class_name_, py_class_name_);
         py_module_ready_ = true;
         if (!py_module_ready_){
@@ -27,7 +27,7 @@ public:
     bool printMsg(){
         /* hello.printMsg() -> bool */
         if (py_module_ready_){
-            char* py_func_name = "printMsg";
+            const char* py_func_name = "printMsg";
             if (pyh::hasattr(py_class_hello_, py_func_name)){
                 pyh::py::object return_obj = py_class_hello_.attr(py_func_name)();
                 bool ret = pyh::py::extract<bool>(return_obj);
@@ -45,7 +45,7 @@ public:
     std::string getMsg(){
         /* hello.getMsg() -> str */
         if (py_module_ready_){
-            char* py_func_name = "getMsg";
+            const char* py_func_name = "getMsg";
             if (pyh::hasattr(py_class_hello_, py_func_name)){
                 pyh::py::object return_obj = py_class_hello_.attr(py_func_name)();
                 std::string ret = pyh::py::extract<std::string>(return_obj);
@@ -63,7 +63,7 @@ public:
     bool setMsg(std::string msg){
         /* hello.setMsg(msg: str) -> bool */
         if (py_module_ready_){
-            char* py_func_name = "setMsg";
+            const char* py_func_name = "setMsg";
             if (pyh::hasattr(py_class_hello_, py_func_name)){
                 pyh::py::object return_obj = py_class_hello_.attr(py_func_name)(msg);
                 bool ret = pyh::py::extract<bool>(return_obj);
@@ -80,8 +80,8 @@ public:
 
 private:
 
-    bool py_module_ready_;
-    char* py_class_name_;
+    const char* py_class_name_ = "hello";
+    bool py_module_ready_ = false;
     pyh::py::object py_class_hello_;
 
 };
