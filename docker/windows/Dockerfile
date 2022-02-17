@@ -32,6 +32,6 @@ WORKDIR /workspace/python-boost-cpp-example
 RUN mkdir build && `
     cd build && `
     cmake .. && `
-    make -j4
+    cmake --build -G "Visual Studio 16 2019" -A x64
 RUN cd build && `
     ./PyHelloApp.exe
