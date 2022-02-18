@@ -1,0 +1,38 @@
+name: Build
+
+# Triggers on main branch pushes
+on:
+  push:
+    branches: [ main ]
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+      # Install dependencies using chocolatey
+      - name: Choco install dependencies
+        shell: cmd
+        run: |
+          choco install -y visualstudio2019community --package-parameters "--allWorkloads --includeRecommended --passive"
+          choco install python --version 3.9
+          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+          choco install boost-msvc-14.2
+      # Build boost for installed python version
+      - name: Build boost
+        shell: cmd
+        run: |
+          cd C:\local\boost_*
+          bootstrap
+          .\b2 --with-python
+      # Build project using cmake
+      - name: Build project
+        shell: cmd
+        run: |
+          mkdir build
+          cd build
+          cmake -G "Visual Studio 16 2019" -A x64 ..
+          cmake --build .
+          
