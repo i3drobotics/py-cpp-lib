@@ -15,8 +15,6 @@ RUN useradd -l -u 33333 -G sudo -md /home/nonrootuser -s /bin/bash -p nonrootuse
     && sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers
 ENV HOME=/home/nonrootuser
 WORKDIR $HOME
-# custom Bash prompt
-RUN { echo && echo "PS1='\[\033[01;32m\]\u\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]\$(__git_ps1 \" (%s)\") $ '" ; } >> .bashrc
 
 ### Non root user (2) ###
 USER nonrootuser
@@ -43,6 +41,8 @@ RUN cd boost && \
     python3 tools/boostdep/depinst/depinst.py python && \
     ./bootstrap.sh --with-python=python3 && \
     ./b2 --with-python
+    
+RUN mkdir $HOME/python-boost-cpp-example
 
 # Add project files
 ADD .vscode $HOME/python-boost-cpp-example/.vscode
@@ -50,8 +50,6 @@ ADD py $HOME/python-boost-cpp-example/py
 ADD src $HOME/python-boost-cpp-example/src
 ADD include $HOME/python-boost-cpp-example/include
 ADD CMakeLists.txt config.h.in $HOME/python-boost-cpp-example/
-
-RUN sudo chown -R nonrootuser:nonrootuser $HOME/python-boost-cpp-example
 
 WORKDIR $HOME/python-boost-cpp-example
 # Build project
