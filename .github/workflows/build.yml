@@ -49,12 +49,12 @@ jobs:
           python-version: 3.9
       # Install boost
       - name: Apt install dependencies
-        shell: cmd
+        shell: bash
         run: |
           sudo apt-get install libboost-all-dev
       # Build project using cmake
       - name: Build project
-        shell: cmd
+        shell: bash
         run: |
           mkdir build
           cd build
