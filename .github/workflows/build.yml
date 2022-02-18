@@ -23,6 +23,8 @@ jobs:
         id: install-boost
         with:
           boost_version: 1.74.0
+          platform_version: 2019
+          toolset: msvc
       # Build boost for installed python version
       - name: Build boost
         shell: cmd
@@ -38,6 +40,8 @@ jobs:
           cd build
           cmake -G "Visual Studio 16 2019" -A x64 ..
           cmake --build .
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
   build-linux:
     runs-on: ubuntu-20.04
