@@ -17,23 +17,37 @@ include_directories(
 
 FIND_PACKAGE(PythonInterp)
 if (PYTHONINTERP_FOUND)
-  if (UNIX AND NOT APPLE)
+  if (UNIX)
+    if (NOT APPLE)
+      if (PYTHON_VERSION_MAJOR EQUAL 3)
+          FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_SUFFIX})
+          FIND_PACKAGE(PythonInterp 3)
+          FIND_PACKAGE(PythonLibs 3 REQUIRED)
+      else()
+          FIND_PACKAGE(Boost COMPONENTS python)
+          FIND_PACKAGE(PythonInterp)
+          FIND_PACKAGE(PythonLibs REQUIRED)
+      endif()
+    elseif(APPLE)
+      if (PYTHON_VERSION_MAJOR EQUAL 3)
+          FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+          FIND_PACKAGE(PythonInterp 3)
+          FIND_PACKAGE(PythonLibs 3 REQUIRED)
+      else()
+          FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+          FIND_PACKAGE(PythonInterp)
+          FIND_PACKAGE(PythonLibs REQUIRED)
+      endif()
+    endif()
+  endif()
+  if (WIN32)
+    set(Boost_USE_STATIC_LIBS ON)
     if (PYTHON_VERSION_MAJOR EQUAL 3)
-        FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_SUFFIX})
+        FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
         FIND_PACKAGE(PythonInterp 3)
         FIND_PACKAGE(PythonLibs 3 REQUIRED)
     else()
         FIND_PACKAGE(Boost COMPONENTS python)
-        FIND_PACKAGE(PythonInterp)
-        FIND_PACKAGE(PythonLibs REQUIRED)
-    endif()
-  else()	
-    if (PYTHON_VERSION_MAJOR EQUAL 3)
-        FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
-        FIND_PACKAGE(PythonInterp 3)
-        FIND_PACKAGE(PythonLibs 3 REQUIRED)
-    else()
-        FIND_PACKAGE(Boost COMPONENTS python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
         FIND_PACKAGE(PythonInterp)
         FIND_PACKAGE(PythonLibs REQUIRED)
     endif()
@@ -42,14 +56,16 @@ else()
     message("Python not found")
 endif()
 
-FIND_PACKAGE(Boost COMPONENTS python)
-
 message(STATUS "PYTHON_LIBRARIES = ${PYTHON_LIBRARIES}")
 message(STATUS "PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE}")
 message(STATUS "PYTHON_INCLUDE_DIRS = ${PYTHON_INCLUDE_DIRS}")
 message(STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}")
 
 include_directories(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+
+if (WIN32)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
 
 set(LIB_SRCS
   src/pyhelper.cpp
@@ -68,10 +84,15 @@ set(APP_SRCS
 )
 
 add_executable( ${PROJECT_NAME}App ${APP_SRCS} )
-target_link_libraries(${PROJECT_NAME}App PUBLIC
+target_link_libraries(${PROJECT_NAME}App PRIVATE 
   ${PROJECT_NAME}
   ${PYTHON_LIBRARIES}
 	${Boost_LIBRARIES}
 )
 
-FILE(COPY py/hello.py DESTINATION .)
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND}
+    ARGS -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/py/hello.py $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)

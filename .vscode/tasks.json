@@ -6,10 +6,15 @@
         {
             "label": "Build debug",
             "type": "shell",
-            "command": "mkdir -p ${workspaceFolder}/build && cd ${workspaceFolder}/build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make -j4",
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "linux": {
+                "command": "mkdir -p '${workspaceFolder}/build' && cd '${workspaceFolder}/build' && cmake -DCMAKE_BUILD_TYPE=Debug .. && make -j4",
+            },
+            "windows": {
+                "command":  "mkdir -p '${workspaceFolder}/build' && cd '${workspaceFolder}/build' && cmake -G 'Visual Studio 16 2019' -A x64 -DCMAKE_BUILD_TYPE=Debug .. && cmake --build .",
             }
         }
     ]

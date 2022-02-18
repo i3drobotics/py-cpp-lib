@@ -4,9 +4,21 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "(Windows) PyHelloApp",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "PyHelloApp.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/build/Debug",
+            "environment": [],
+            "console": "externalTerminal",
+            "preLaunchTask": "Build debug"
+        },
+        {
+            "name": "(Linux) PyHelloApp",
             "type": "gdb",
             "request": "launch",
-            "name": "Debug App (GDB)",
             "target": "./PyHelloApp",
             "cwd": "${workspaceRoot}/build",
             "preLaunchTask": "Build debug"

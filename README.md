@@ -20,7 +20,22 @@ make
 ### Windows
 Install dependencies using [chocolatey](https://chocolatey.org/install#individual)
 ```
-choco install cmake
+choco install -y visualstudio2019community --package-parameters "--allWorkloads --includeRecommended --passive"
+choco install python --version 3.9
+choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
 choco install boost-msvc-14.2
-choco install visualstudio2019community
+```
+Build boost for installed python version
+```
+cd 
+bootstrap
+.\b2 --with-python
+```
+
+Build using cmake
+```
+mkdir build
+cd build
+cmake -G "Visual Studio 16 2019" -A x64 ..
+cmake --build .
 ```
