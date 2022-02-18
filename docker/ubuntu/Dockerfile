@@ -33,7 +33,7 @@ RUN git clone https://github.com/boostorg/boost.git && \
     cd boost && \
     git submodule update --init tools/boostdep && \
     git submodule update --init libs/python && \
-    python tools/boostdep/depinst/depinst.py python && \
+    python3 tools/boostdep/depinst/depinst.py python && \
     ./bootstrap.sh && \
     ./b2 --with-python
 
