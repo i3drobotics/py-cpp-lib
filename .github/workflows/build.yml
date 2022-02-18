@@ -17,19 +17,15 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      # Install boost
+      # Install & build boost with components: python
       - name: Install boost
-        uses: MarkusJx/install-boost@v2.1.0
-        id: install-boost
-        with:
-          boost_version: 1.73.0
-          platform_version: 2019
-          toolset: msvc
-      # Build boost for installed python version
-      - name: Build boost
         shell: cmd
         run: |
-          cd ${{ steps.install-boost.outputs.BOOST_ROOT }}
+          git clone https://github.com/boostorg/boost.git
+          cd boost
+          git submodule update --init tools/boostdep
+          git submodule update --init libs/python
+          python tools/boostdep/depinst/depinst.py python
           bootstrap
           .\b2 --with-python
       # Build project using cmake
@@ -38,7 +34,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G "Visual Studio 16 2019" -A x64 ..
+          cmake -G "Visual Studio 16 2019" -A x64 -DBOOST_ROOT=./boost ..
           cmake --build .
         env:
           BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
@@ -52,16 +48,22 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      # Install boost
+      # Install & build boost with components: python
       - name: Install boost
         shell: bash
         run: |
-          sudo apt-get update && sudo apt-get install libboost-all-dev
+          git clone https://github.com/boostorg/boost.git
+          cd boost
+          git submodule update --init tools/boostdep
+          git submodule update --init libs/python
+          python tools/boostdep/depinst/depinst.py python
+          ./bootstrap.sh
+          ./b2 --with-python
       # Build project using cmake
       - name: Build project
         shell: bash
         run: |
           mkdir build
           cd build
-          cmake ..
+          cmake -DBOOST_ROOT=./boost ..
           make
