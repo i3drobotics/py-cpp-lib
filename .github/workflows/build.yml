@@ -54,12 +54,12 @@ jobs:
       - name: Install boost
         shell: bash
         run: |
-          git clone https://github.com/boostorg/boost.git
+          git clone https://github.com/boostorg/boost.git -b boost-1.74.0
           cd boost
           git submodule update --init tools/boostdep
           git submodule update --init libs/python
           python3 tools/boostdep/depinst/depinst.py python
-          ./bootstrap.sh
+          ./bootstrap.sh --with-python=python3
           ./b2 --with-python
       # Build project using cmake
       - name: Build project

@@ -41,7 +41,7 @@ RUN cd boost && \
     git submodule update --init tools/boostdep && \
     git submodule update --init libs/python && \
     python3 tools/boostdep/depinst/depinst.py python && \
-    ./bootstrap.sh && \
+    ./bootstrap.sh --with-python=python3 && \
     ./b2 --with-python
 
 # Add project files
