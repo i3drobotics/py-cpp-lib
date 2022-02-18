@@ -24,10 +24,18 @@ RUN sudo apt-get update && \
     sudo TZ=Europe/London \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y \
-    libboost-all-dev \
     python3-dev \
     cmake g++ && \
     sudo rm -rf /var/lib/apt/lists/*
+
+# Install boost
+RUN git clone https://github.com/boostorg/boost.git && \
+    cd boost && \
+    git submodule update --init tools/boostdep && \
+    git submodule update --init libs/python && \
+    python tools/boostdep/depinst/depinst.py python && \
+    ./bootstrap.sh && \
+    ./b2 --with-python
 
 # Add project files
 ADD .vscode /workspace/py-cpp-lib/.vscode
