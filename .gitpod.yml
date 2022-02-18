@@ -6,7 +6,7 @@ tasks:
     init: |
       mkdir build
       cd build
-      cmake -DBOOST_ROOT=/boost ..
+      cmake -DBOOST_ROOT=$HOME/boost ..
       make -j4
       ./PyHelloApp
       cd ..

@@ -11,11 +11,11 @@ sudo apt-get install python3-dev cmake g++
 
 Install boost python:
 ```
-git clone https://github.com/boostorg/boost.git
+git clone https://github.com/boostorg/boost.git -t boost-1.74.0
 cd boost
 git submodule update --init tools/boostdep
 git submodule update --init libs/python
-python tools/boostdep/depinst/depinst.py python
+python3 tools/boostdep/depinst/depinst.py python
 ./bootstrap.sh
 ./b2 --with-python
 ```
