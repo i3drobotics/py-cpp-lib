@@ -8,10 +8,7 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "PyHelloApp.exe",
-            "args": [],
-            "stopAtEntry": false,
             "cwd": "${workspaceRoot}/build/Debug",
-            "environment": [],
             "console": "externalTerminal",
             "preLaunchTask": "Build debug"
         },

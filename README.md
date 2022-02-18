@@ -6,35 +6,48 @@ Example for creating a C++ library from a python module
 ### Linux
 Install dependencies using apt-get:
 ```
-sudo apt-get install libboost-all-dev python3-dev cmake g++
+sudo apt-get install python3-dev cmake g++
+```
+
+Install boost python:
+```
+git clone https://github.com/boostorg/boost.git
+cd boost
+git submodule update --init tools/boostdep
+git submodule update --init libs/python
+python tools/boostdep/depinst/depinst.py python
+./bootstrap.sh
+./b2 --with-python
 ```
 
 Build project using cmake:
 ```
 mkdir build
 cd build
-cmake ..
+cmake -DBOOST_ROOT=./boost ..
 make
 ```
 
 ### Windows
-Dependencies can be installed easily using [chocolatey](https://chocolatey.org/install#individual).  
-If it's not already installed, run the following command in an admin powershell terminal:
-```
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-```
+Install required packages:
+- [Visual Studio](https://visualstudio.microsoft.com/downloads/)
+- [Python](https://www.python.org/downloads/)
+- [CMake](https://cmake.org/download/)
 
-Install the dependencies using chocolatey:
+These can be installed using [chocolatey](https://chocolatey.org/install#individual):
 ```
 choco install -y visualstudio2019community --package-parameters "--allWorkloads --includeRecommended --passive"
 choco install python --version 3.9
 choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-choco install boost-msvc-14.2
 ```
 
-Build boost for installed python version:
+Install boost python:
 ```
-cd C:\local\boost_*
+git clone https://github.com/boostorg/boost.git
+cd boost
+git submodule update --init tools/boostdep
+git submodule update --init libs/python
+python tools/boostdep/depinst/depinst.py python
 bootstrap
 .\b2 --with-python
 ```
@@ -43,6 +56,6 @@ Build project using cmake:
 ```
 mkdir build
 cd build
-cmake -G "Visual Studio 16 2019" -A x64 ..
+cmake -G "Visual Studio 16 2019" -A x64 -DBOOST_ROOT=./boost ..
 cmake --build .
 ```

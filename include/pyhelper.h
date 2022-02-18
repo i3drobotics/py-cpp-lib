@@ -9,7 +9,7 @@
 // #pragma pop_macro("slots")
 
 #include <iostream> // cout
-#include <cstdlib> // setenv
+#include <vector>
 #include <boost/python.hpp>
 // #include <boost/python/numpy.hpp>
 
