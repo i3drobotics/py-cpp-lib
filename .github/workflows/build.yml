@@ -8,17 +8,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-win:
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
-      # Install dependencies using chocolatey
-      - name: Choco install dependencies
+      # Setup Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      # Install boost
+      - name: Choco install boost
         shell: cmd
         run: |
-          choco install -y visualstudio2019community --package-parameters "--allWorkloads --includeRecommended --passive"
-          choco install python --version 3.9
-          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
           choco install boost-msvc-14.2
       # Build boost for installed python version
       - name: Build boost
@@ -35,4 +37,26 @@ jobs:
           cd build
           cmake -G "Visual Studio 16 2019" -A x64 ..
           cmake --build .
-          
+
+  build-linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      # Setup Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      # Install boost
+      - name: Apt install dependencies
+        shell: cmd
+        run: |
+          sudo apt-get install libboost-all-dev
+      # Build project using cmake
+      - name: Build project
+        shell: cmd
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make

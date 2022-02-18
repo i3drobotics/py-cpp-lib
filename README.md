@@ -4,7 +4,7 @@ Example for creating a C++ library from a python module
 ## Build
 
 ### Linux
-Install dependencies:
+Install dependencies using apt-get:
 ```
 sudo apt-get install libboost-all-dev python3-dev cmake g++
 ```
