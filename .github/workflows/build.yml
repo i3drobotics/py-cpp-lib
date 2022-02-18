@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: 3.9
       # Install & build boost with components: python
-      - name: Install boost
+      - name: Setup boost
         shell: cmd
         run: |
           git clone https://github.com/boostorg/boost.git
@@ -27,17 +27,19 @@ jobs:
           git submodule update --init libs/python
           python tools/boostdep/depinst/depinst.py python
           bootstrap
-          .\b2 --with-python
+      - name: Build boost
+        shell: cmd
+        run: |
+          cd boost
+          b2.exe --with-python
       # Build project using cmake
       - name: Build project
         shell: cmd
         run: |
           mkdir build
           cd build
-          cmake -G "Visual Studio 16 2019" -A x64 -DBOOST_ROOT=./boost ..
+          cmake -G "Visual Studio 16 2019" -A x64 -DBOOST_ROOT=$GITHUB_WORKSPACE/boost ..
           cmake --build .
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
 
   build-linux:
     runs-on: ubuntu-20.04
@@ -65,5 +67,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DBOOST_ROOT=./boost ..
+          cmake -DBOOST_ROOT=$GITHUB_WORKSPACE/boost ..
           make
