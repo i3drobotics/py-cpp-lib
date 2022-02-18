@@ -28,6 +28,7 @@ RUN sudo apt-get update && \
     cmake g++ && \
     sudo rm -rf /var/lib/apt/lists/*
 
+WORKDIR /
 # Install boost
 RUN git clone https://github.com/boostorg/boost.git && \
     cd boost && \
@@ -36,6 +37,7 @@ RUN git clone https://github.com/boostorg/boost.git && \
     python3 tools/boostdep/depinst/depinst.py python && \
     ./bootstrap.sh && \
     ./b2 --with-python
+RUN sudo chown -R nonrootuser:nonrootuser /boost
 
 # Add project files
 ADD .vscode /workspace/py-cpp-lib/.vscode
@@ -44,13 +46,13 @@ ADD src /workspace/py-cpp-lib/src
 ADD include /workspace/py-cpp-lib/include
 ADD CMakeLists.txt config.h.in /workspace/py-cpp-lib/
 
-RUN sudo chown -R nonrootuser:nonrootuser /workspace
+RUN sudo chown -R nonrootuser:nonrootuser /workspace/py-cpp-lib
 
 WORKDIR /workspace/py-cpp-lib
 # Build project
 RUN mkdir build && \
     cd build && \
-    cmake .. && \
+    cmake -DBOOST_ROOT=/boost .. && \
     make -j4
 RUN cd build && \
     ./PyHelloApp
