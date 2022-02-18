@@ -21,6 +21,8 @@ jobs:
       - name: Install boost
         uses: MarkusJx/install-boost@v2.1.0
         id: install-boost
+        with:
+          boost_version: 1.74.0
       # Build boost for installed python version
       - name: Build boost
         shell: cmd
