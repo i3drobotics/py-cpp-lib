@@ -38,7 +38,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G "Visual Studio 16 2019" -A x64 -DBOOST_ROOT=$GITHUB_WORKSPACE/boost ..
+          cmake -G "Visual Studio 16 2019" -A x64 -DBOOST_ROOT=${{ github.workspace }}/boost ..
           cmake --build .
 
   build-linux:
@@ -67,5 +67,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DBOOST_ROOT=$GITHUB_WORKSPACE/boost ..
+          cmake -DBOOST_ROOT=${{ github.workspace }}/boost ..
           make
