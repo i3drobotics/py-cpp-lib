@@ -1,11 +1,12 @@
 #pragma once
 
+#include "export.h"
 #include "pyhelper.h"
 
-class pyHello
+class PyHello
 {
 public:
-    pyHello();
+    PyHello();
 
     bool isInitalised();
 
@@ -20,3 +21,9 @@ private:
     py::object py_class_hello_;
 
 };
+
+extern "C" {
+    PyHello DLL_EXPORT * PyHello_create();
+    void PyHello_test();
+    void DLL_EXPORT PyHello_dispose(PyHello* instance);
+}

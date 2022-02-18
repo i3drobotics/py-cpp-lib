@@ -3,7 +3,7 @@
 namespace py = boost::python;
     
 template <class T>
-py::list pyHelper::toPythonList(std::vector<T> v) {
+py::list PyHelper::toPythonList(std::vector<T> v) {
     typename std::vector<T>::iterator iter;
     py::list list;
     for (iter = v.begin(); iter != v.end(); ++iter) {
@@ -13,7 +13,7 @@ py::list pyHelper::toPythonList(std::vector<T> v) {
 }
 
 template <class T>
-void pyHelper::toPythonList(std::vector<T> v, py::list* l) {
+void PyHelper::toPythonList(std::vector<T> v, py::list* l) {
     typename std::vector<T>::iterator iter;
     for (iter = v.begin(); iter != v.end(); ++iter) {
         l->append(*iter);
@@ -21,7 +21,7 @@ void pyHelper::toPythonList(std::vector<T> v, py::list* l) {
 }
 
 template <class T>
-std::vector<T> pyHelper::toStdVector(py::list l) {
+std::vector<T> PyHelper::toStdVector(py::list l) {
     py::ssize_t n = py::len(l);
     std::cout << "converting list of size: " << n << " to vector" << std::endl;
     std::vector<T> v;
@@ -34,7 +34,7 @@ std::vector<T> pyHelper::toStdVector(py::list l) {
 }
 
 template <class T>
-void pyHelper::toStdVector(py::list l,std::vector<T>* v) {
+void PyHelper::toStdVector(py::list l,std::vector<T>* v) {
     py::ssize_t n = py::len(l);
     std::cout << "converting list of size: " << n << " to vector" << std::endl;
     for(py::ssize_t i=0;i<n;i++) {
@@ -44,11 +44,11 @@ void pyHelper::toStdVector(py::list l,std::vector<T>* v) {
     }
 }
 
-bool pyHelper::hasattr(py::object o, const char* name) {
+bool PyHelper::hasattr(py::object o, const char* name) {
     return PyObject_HasAttrString(o.ptr(), name);
 }
 
-void pyHelper::initPython(){
+void PyHelper::initPython(){
     try {
         Py_Initialize();
         // Insert the current working directory into the python path so module search is relative
@@ -60,7 +60,7 @@ void pyHelper::initPython(){
     }
 }
 
-bool pyHelper::classExists(const char* py_module, const char* py_class){
+bool PyHelper::classExists(const char* py_module, const char* py_class){
     try
     {
         py::object main_module((
@@ -81,7 +81,7 @@ bool pyHelper::classExists(const char* py_module, const char* py_class){
     }
 }
 
-py::object pyHelper::initClass(const char* py_module, const char* py_class){
+py::object PyHelper::initClass(const char* py_module, const char* py_class){
     // for safety 'classExists' should be run before 'initClass'
     py::object main_module((
         py::handle<>(py::borrowed(PyImport_AddModule("__main__")))));

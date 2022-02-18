@@ -16,7 +16,7 @@
 namespace py = boost::python;
 // namespace np = boost::python::numpy;
 
-class pyHelper
+class PyHelper
 {
 public:
     

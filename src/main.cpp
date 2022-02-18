@@ -2,8 +2,8 @@
 
 int main(int argc, char *argv[])
 {
-    pyHelper::initPython();   
-    pyHello pyhello = pyHello();
+    PyHelper::initPython();   
+    PyHello pyhello = PyHello();
     std::cout << pyhello.getMsg() << std::endl;
 
     return 0;
